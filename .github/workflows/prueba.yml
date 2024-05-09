@@ -1,22 +1,23 @@
-#Nombre de nuestro workflow: Prueba 1
-name: Prueba 1
-#Esto quiere decir:
-#En la rama main, cuando se haga un push, se ejecutará el job que se defina en este archivo.
-on: 
-    push:
-        branches:
-        - main
-#Definimos los trabajos que se ejecutarán en este workflow.
+name: Python application test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-    #Nombre de nuestro trabajo: primer_trabajo
-    primer_trabajo:
-      
-        #Definimos el tipo de máquina en la que se ejecutará el trabajo.
-        runs-on: ubuntu-latest
-        #Definimos los pasos que se ejecutarán en este trabajo.
-        steps:
-            #Nombre de nuestro paso: primer_paso
-            - name: Run la -la
-                #Definimos la acción que se ejecutará en este paso.
-              run: ls -la
-              
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Run script
+      run: python app.py
+      continue-on-error: true
